@@ -1,0 +1,152 @@
+[
+    {
+        "name": "door",
+        "configuration":{
+            "on-load": "not-armed",
+            "on-fail": "set push cannot arm %reason ",
+            "required":[
+                {
+                    "name":"window",
+                    "reading":"state",
+                    "value":"closed"
+                }
+            ]
+        },
+        "armwait": {
+            "action": "set push arming",
+            "delay": ""
+        },
+        "arm": {
+            "action": "set light off; set push armed",
+            "delay": "00:00:10",
+            "at": "22:00",
+            "event": [
+                {
+                    "name":"presence",
+                    "reading":"",
+                    "op":"eq",
+                    "value":"0"
+                },{
+                    "regex":"alarmctl.on.*"    
+                }
+            ]
+        },
+        "disarm": {
+            "action": "set light off; set push disarmed",
+            "delay": "",
+            "at": [ 
+                "08:00",
+                {
+                    "name": "presence",
+                    "reading": "state",
+                    "op": "ne",
+                    "value": "0"
+                },{
+                    "name": "light",
+                    "reading": "state",
+                    "op": "ne",
+                    "value": "on"
+                }
+            ],
+            "event": [
+                {
+                    "regex":"alarmctl.off.*"
+                }
+            ]
+        },
+        "sensors": [
+            {
+                "name": "door",
+                "regex": "door:open.*",
+                "msg": "door opened!"
+            }
+        ],
+        "actions": [
+            {
+                "name": "sirene",
+                "activate": "set sirene on",
+                "deactivate": "set sirene off",
+                "delay": "00:00:15"
+            },
+            {
+                "name": "light",
+                "activate": "set light on",
+                "deactivate": "set light off",
+                "delay": ""
+            },{
+                "name":"push",
+                "activate": "set push alarm %alarmMsg",
+                "deactivate": "set push disarmed",
+                "delay":"00:00:15"
+            }
+        ]
+    },{
+        "name": "windows",
+        "configuration":{
+            "on-load": "not-armed",
+            "on-fail": "set push cannot arm %reason ",
+            "required":[
+                {
+                    "name":"window",
+                    "reading":"state",
+                    "value":"closed"
+                }
+            ]
+        },
+        "armwait": {
+            "action": "",
+            "delay": ""
+        },
+        "arm": {
+            "action": "",
+            "delay": "",
+            "at": "22:00",
+            "event": [
+                {
+                    "name":"presence",
+                    "reading":"",
+                    "op":"eq",
+                    "value":"0"
+                },{
+                    "regex":"alarmctl.on.*"    
+                }
+            ]
+        },
+        "disarm": {
+            "action": "",
+            "delay": "",
+            "at": "08:00",
+            "event": [
+                {
+                    "regex":"alarmctl.off.*"
+                }
+            ]
+        },
+        "sensors": [
+            {
+                "name": "window",
+                "regex": "window:open.*",
+                "msg": "window break in!"
+            }
+        ],
+        "actions": [
+            {
+                "name": "sirene",
+                "activate": "set sirene on",
+                "deactivate": "set sirene off",
+                "delay": ""
+            },
+            {
+                "name": "light",
+                "activate": "set light on",
+                "deactivate": "set light off",
+                "delay": ""
+            },{
+                "name":"push",
+                "activate": "set push alarm window break in",
+                "deactivate": "set push disarmed",
+                "delay":""
+            }
+        ]
+    }
+]
